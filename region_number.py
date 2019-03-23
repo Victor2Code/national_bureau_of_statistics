@@ -132,7 +132,7 @@ def write_city_info(province,city_info):
     filename="{}.txt".format(province)
     with open(filename,'w') as f:
         for item in to_print:
-            f.write(item[0]+' '+item[1]+' '+item[2]+' '+item[3]+' '+item[4]+' '+item[5]+' '+item[6])
+            f.write(item[0]+' '+item[1]+' '+item[2]+' '+item[3]+' '+item[4]+' '+item[5]+' '+item[6]+'\n')
 
 base_url='http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/'
 main(base_url)

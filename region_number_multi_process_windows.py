@@ -137,7 +137,7 @@ def write_city_info(province,city_info):
         n=n+1
     print("=== {} Done! ===".format(province))
     filename="{}.txt".format(province)
-    with open(filename,'w') as f:
+    with open(filename,'w',encoding='utf-8') as f:
         for item in to_print:
             f.write(item[0]+' '+item[1]+' '+item[2]+' '+item[3]+' '+item[4]+' '+item[5]+' '+item[6]+'\r\n')
 

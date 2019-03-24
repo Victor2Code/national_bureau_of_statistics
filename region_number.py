@@ -56,7 +56,7 @@ def get_final_table(url,tr_class):
         final.append((code,classify,name))
     return final 
 
-def main(base_url):
+def main(base_url,start=1):
     # url is the main entrance with links to every provinces
     url=base_url+'index.html'
     result=get_web_content_gbk(url)
@@ -76,21 +76,28 @@ def main(base_url):
         all_city_info[province[1]]=temp  
         print("{} Done![{}/{}]".format(province[1],i,len(provinces)))
         i=i+1
-        if i == 4:  # testing purpose
-            break
+        #if i == 6:  # testing purpose
+        #    break
     print("=== All cities done ===")
     time.sleep(1)
 
     #for all cities, generate a total county list, 3-dimension list (link, county_number, county_name), store as a dictionary
-    print("=== Get county info from cities ===")
+    print("=== Write province info to file ===")
     m=1
-    p = multiprocessing.Pool(processes=3)
+    p = multiprocessing.Pool(processes=4)
+    print("Start Doanload from province number: {}".format(start))
+    time.sleep(2)
     for cities in all_city_info.items():
         #print("=== {} Start ===".format(cities[0]))
-        p.apply_async(write_city_info,args=(cities[0],cities[1]))
+        if m < start:
+            m=m+1
+            continue 
+        else:
+            p.apply_async(write_city_info,args=(cities[0],cities[1]))
         #write_city_info(cities[0],cities[1])
         #print("=== {} Done! [{}/{}]===".format(cities[0],m,len(all_city_info)))
-        #m=m+1
+            m=m+1
+    time.sleep(1)
     p.close()
     p.join()
     print("=== All Done ===")
@@ -135,7 +142,8 @@ def write_city_info(province,city_info):
             f.write(item[0]+' '+item[1]+' '+item[2]+' '+item[3]+' '+item[4]+' '+item[5]+' '+item[6]+'\n')
 
 base_url='http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/'
-main(base_url)
+# start from the 1st province, unless a start number is specified
+main(base_url,4)
 
 # test only
 #url='http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/42/4201.html'
